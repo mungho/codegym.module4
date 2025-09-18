@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 public class EmailConfigRepository implements IEmailConfigRepository{
     private static EmailConfig emailConfig;
     static {
-        emailConfig = new EmailConfig("en", 10, true, "Hello,");
+        emailConfig = new EmailConfig("en", 10, true, "Mung Ho");
     }
     @Override
     public EmailConfig getEmailConfig() {

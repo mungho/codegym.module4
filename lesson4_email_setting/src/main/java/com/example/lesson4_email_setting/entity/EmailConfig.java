@@ -13,6 +13,9 @@ public class EmailConfig {
         this.signature = signature;
     }
 
+    public EmailConfig() {
+    }
+
     public String getLanguage() {
         return language;
     }

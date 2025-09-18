@@ -32,7 +32,8 @@
             <tr>
                 <td>Spams filter:</td>
                 <td>
-                    <form:checkbox path="spamFilter">Enabled spams filter</form:checkbox>
+                    <form:checkbox path="emailEnabled" id="emailEnabled"/>
+                    <label for="emailEnabled">Enabled spams filter</label>
                 </td>
             </tr>
             <tr>
