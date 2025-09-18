@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <form:form action="/email-config" method="post" modelAttribute="emailConfig">
+    <form:form action="${pageContext.request.contextPath}/email-config" method="post" modelAttribute="emailConfig">
         <table>
             <tr>
                 <td>Language:</td>
@@ -18,14 +18,14 @@
                 <td>Page Size:</td>
                 <td>
                     <span>Show </span>
-                    <select name="pageSize">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
+                    <form:select path="pageSize">
+                        <form:option value="5">5</form:option>
+                        <form:option value="10">10</form:option>
+                        <form:option value="15">15</form:option>
+                        <form:option value="25">25</form:option>
+                        <form:option value="50">50</form:option>
+                        <form:option value="100">100</form:option>
+                    </form:select>
                     <span> emails per page</span>
                 </td>
             </tr>
