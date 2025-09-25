@@ -28,5 +28,25 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("mess","add success");
         return "redirect:/product/list";
     }
+    @GetMapping("/edit")
+    public String edit(@RequestParam("id") int productId,
+                       Model model){
+        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("product", productService.getProductById(productId));
+        model.addAttribute("openEditModal", true);
+        return "product/list";
+    }
+
+    @PostMapping("/edit")
+    public String edit(@ModelAttribute Product product){
+        productService.updateProduct(product);
+        return "redirect:/product/list";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") int productId){
+        productService.deleteProduct(productId);
+        return "redirect:/product/list";
+    }
 
 }

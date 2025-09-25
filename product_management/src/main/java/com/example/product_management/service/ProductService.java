@@ -19,22 +19,22 @@ public class ProductService implements IProductService{
 
     @Override
     public boolean deleteProduct(int id) {
-        return false;
+        return productRepository.deleteProduct(id);
     }
 
     @Override
     public boolean updateProduct(Product product) {
-        return false;
+        return productRepository.updateProduct(product);
     }
 
     @Override
     public Product getProductById(int id) {
-        return null;
+        return productRepository.getProductById(id);
     }
 
     @Override
-    public Product findProductById(String name) {
-        return null;
+    public Product findProductByName(String name) {
+        return productRepository.findProductByName(name);
     }
 
     @Override

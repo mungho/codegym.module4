@@ -9,6 +9,6 @@ public interface IProductService {
     boolean deleteProduct(int id);
     boolean updateProduct(Product product);
     Product getProductById(int id);
-    Product findProductById(String name);
+    Product findProductByName(String name);
     List<Product> getAllProducts();
 }

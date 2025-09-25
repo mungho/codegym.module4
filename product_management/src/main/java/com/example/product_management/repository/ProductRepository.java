@@ -23,21 +23,41 @@ public class ProductRepository implements IProductRepository{
 
     @Override
     public boolean deleteProduct(int id) {
+        products.remove(getProductById(id));
         return false;
     }
 
     @Override
     public boolean updateProduct(Product product) {
+        for(Product p:products){
+            if(p.getId()==product.getId()){
+                p.setName(product.getName());
+                p.setPrice(product.getPrice());
+                p.setDescription(product.getDescription());
+                p.setSupplier(product.getSupplier());
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public Product getProductById(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
         return null;
     }
 
     @Override
-    public Product findProductById(String name) {
+    public Product findProductByName(String name) {
+        for (Product product : products) {
+            if (product.getName().equals(name)) {
+                return product;
+            }
+        }
         return null;
     }
 
