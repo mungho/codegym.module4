@@ -1,8 +1,13 @@
 package com.example.product_management.repository;
 
 import com.example.product_management.entity.Product;
+
+import com.example.product_management.utils.ConnectionUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +21,40 @@ public class ProductRepository implements IProductRepository{
         products.add(new Product(3, "Bánh mì thập cẩm", 30000, "Bánh mì chả, thịt nướng", "Anh Quân"));
     }
 
+//    @Override
+//    public boolean addProduct(Product product) {
+//        Session session = ConnectionUtil.sessionFactory.openSession();
+//        Transaction transaction = session.getTransaction();
+//        try {
+//            transaction.begin();
+//            session.persist(product);
+//            transaction.commit();
+//        } catch (Exception e){
+//            transaction.rollback();
+//            return false;
+//        }
+//        return true;
+//    }
+
     @Override
     public boolean addProduct(Product product) {
-        return products.add(product);
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = ConnectionUtil.sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            session.persist(product);  // hoặc session.save(product);
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (session != null) session.close();
+        }
     }
 
     @Override
