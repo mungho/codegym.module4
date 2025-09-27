@@ -1,0 +1,40 @@
+<div th:fragment="editProduct">
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/product/edit" method="post" th:object="${product}">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editProduct">Edit product</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Product ID:</label>
+                            <input readonly type="number" class="form-control" placeholder="Enter product ID" th:field="*{id}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Name:</label>
+                            <input type="text" class="form-control" placeholder="Enter product name" th:field="*{name}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description:</label>
+                            <textarea class="form-control" placeholder="Enter product description" th:field="*{description}"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Supplier:</label>
+                            <input type="text" class="form-control" placeholder="Enter product supplier" th:field="*{supplier}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Price:</label>
+                            <input type="text" class="form-control" placeholder="Enter product price" th:field="*{price}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
