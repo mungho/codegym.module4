@@ -8,13 +8,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <input type="hidden" th:field="*{id}">
+            <input type="hidden" class="form-control" id="postId" th:field="*{id}">
             <div class="col-auto">
               <label class="form-label">Post type:</label>
-              <select class="form-select" th:field="*{typeId}">
+              <select class="form-select" name="type">
                 <option th:each="type : ${blogTypeList}"
                         th:value="${type.id}"
-                        th:text="${type.name}">
+                        th:text="${type.name}"
+                        th:selected="${type.id == selectedType}">
                 </option>
               </select>
             </div>

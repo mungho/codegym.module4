@@ -9,12 +9,20 @@
             </div>
             <div class="text-end d-flex justify-content-end gap-2">
                 <div class="d-flex gap-2">
-                    <a th:href="@{/blog/edit(id=${blogDetail.id}, type=${selectedType})}"
-                       class="btn-sm">Edit</a>
+<!--                    <a th:href="@{/blog/edit(id=${blogDetail.id}, type=${selectedType})}"-->
+<!--                       class="btn-sm">Edit</a>-->
+                    <form th:action="@{/blog/edit}" method="get" class="d-flex me-2">
+                        <input type="hidden" name="id" th:value="${blogDetail.id}">
+                        <input type="hidden" name="type" th:value="${selectedType}">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Edit
+                        </button>
+                    </form>
                 </div>
                 <div class="d-flex gap-2">
-                    <a th:href="@{/blog/delete(id=${blogDetail.id}, type=${selectedType})}"
-                       class="btn-danger btn-sm">Delete</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteBlogModal" th:attr="data-id=${blogDetail.id}">
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
@@ -31,4 +39,6 @@
             </div>
         </div>
     </article>
+
+    <div th:replace="layout/blog-delete :: blog-delete"></div>
 </section>

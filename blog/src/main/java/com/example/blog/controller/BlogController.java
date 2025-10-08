@@ -83,9 +83,31 @@ public class BlogController {
 
     @PostMapping("/blog/edit")
     public String editBlog(@ModelAttribute BlogContent blogContent,
-                           @RequestParam(name = "type", required = false) Integer typeId){
+                          @RequestParam(name = "type", required = false) Integer typeId){
         blogContent.setBlogType(blogTypeService.findAll().stream().filter(t -> t.getId() == typeId).findFirst().orElse(null));
-        blogService.updateBlog(blogContent);
+        blogService.addBlog(blogContent);
         return "redirect:/?type=" + typeId;
+    }
+
+    @PostMapping("/blog/delete")
+    public String deleteBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                             @RequestParam(name = "id") int id,
+                             Model model){
+        blogService.deleteBlogById(id);
+        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, 1));
+        model.addAttribute("blogTypeList", blogTypeService.findAll());
+        model.addAttribute("selectedType", typeId);
+        return "blog/home";
+    }
+
+    @GetMapping("/blog/search")
+    public String showSearchBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                                 @RequestParam(name = "search") String search,
+                                 Model model){
+        int resolvedType = (typeId != null) ? typeId : 1;
+        model.addAttribute("blogList", blogService.findAllByBlogType_IdAndTitleContaining(resolvedType, search, 1));
+        model.addAttribute("blogTypeList", blogTypeService.findAll());
+        model.addAttribute("selectedType", typeId);
+        return "blog/home";
     }
 }

@@ -10,8 +10,9 @@
                     <input type="hidden" name="type" th:value="${selectedType}">
                     <button type="submit" class="btn btn-primary">Add Post</button>
                 </form>
-                <form class="d-flex me-2" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                <form action="/blog/search" method="get" class="d-flex me-2" role="search">
+                    <input type="hidden" name="type" th:value="${selectedType}">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Search by title" aria-label="Search"/>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
