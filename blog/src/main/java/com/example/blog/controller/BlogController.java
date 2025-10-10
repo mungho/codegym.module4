@@ -4,9 +4,14 @@ import com.example.blog.entity.BlogContent;
 import com.example.blog.service.IBlogService;
 import com.example.blog.service.IBlogTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Optional;
 
@@ -19,12 +24,25 @@ public class BlogController {
 
     @GetMapping(value = "")
     public String showBlog(@RequestParam(name = "type", required = false, defaultValue = "1") Integer typeId,
+                           @RequestParam(name="page", required = false, defaultValue = "0") int page,
                            Model model){
-        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId));
+        Pageable pageable = PageRequest.of(page,9,Sort.by("createdAt").descending());
+        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, pageable));
         model.addAttribute("blogTypeList", blogTypeService.findAll());
         model.addAttribute("selectedType", typeId);
         return "blog/home";
     }
+
+//    @GetMapping(value = "")
+//    public String showBlog(@RequestParam(name = "type", required = false, defaultValue = "1") Integer typeId,
+//                           @RequestParam(name="page", required = false, defaultValue = "0") int page,
+//                           Model model){
+//        Pageable pageable = PageRequest.of(page,10,Sort.by("createdAt").descending());
+//        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, pageable));
+//        model.addAttribute("blogTypeList", blogTypeService.findAll());
+//        model.addAttribute("selectedType", typeId);
+//        return "blog/home";
+//    }
 
     @GetMapping(value = "/blog/detail")
     public String showBlogDetail(@RequestParam(name = "type", required = false) Integer typeId,
@@ -51,9 +69,11 @@ public class BlogController {
 
     @GetMapping("/blog/add")
     public String showAddBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                              @RequestParam(name = "page", required = false, defaultValue = "0") int page,
                               Model model) {
+        Pageable pageable = PageRequest.of(page,9,Sort.by("createdAt").descending());
         int resolvedType = (typeId != null) ? typeId : 1;
-        model.addAttribute("blogList", blogService.findAllByBlogType_Id(resolvedType));
+        model.addAttribute("blogList", blogService.findAllByBlogType_Id(resolvedType,  pageable));
         model.addAttribute("blogTypeList", blogTypeService.findAll());
         model.addAttribute("blog", new BlogContent());
         model.addAttribute("openAddModal", true);
@@ -71,9 +91,11 @@ public class BlogController {
 
     @GetMapping("/blog/edit")
     public String showEditBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                               @RequestParam(name = "page", required = false, defaultValue = "0") int page,
                                @RequestParam(name = "id") int id,
                                Model model){
-        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId));
+        Pageable pageable = PageRequest.of(page,9,Sort.by("createdAt").descending());
+        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, pageable));
         model.addAttribute("blogTypeList", blogTypeService.findAll());
         model.addAttribute("blog", blogService.findById(id));
         model.addAttribute("openAddModal", true);
@@ -91,10 +113,12 @@ public class BlogController {
 
     @PostMapping("/blog/delete")
     public String deleteBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
                              @RequestParam(name = "id") int id,
                              Model model){
+        Pageable pageable = PageRequest.of(page,9,Sort.by("createdAt").descending());
         blogService.deleteBlogById(id);
-        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, 1));
+        model.addAttribute("blogList", blogService.findAllByBlogType_Id(typeId, pageable));
         model.addAttribute("blogTypeList", blogTypeService.findAll());
         model.addAttribute("selectedType", typeId);
         return "blog/home";
@@ -102,10 +126,12 @@ public class BlogController {
 
     @GetMapping("/blog/search")
     public String showSearchBlog(@RequestParam(name = "type", required = false) Integer typeId,
+                                 @RequestParam(name = "page", required = false, defaultValue = "0") int page,
                                  @RequestParam(name = "search") String search,
                                  Model model){
+        Pageable pageable = PageRequest.of(page,9,Sort.by("createdAt").descending());
         int resolvedType = (typeId != null) ? typeId : 1;
-        model.addAttribute("blogList", blogService.findAllByBlogType_IdAndTitleContaining(resolvedType, search, 1));
+        model.addAttribute("blogList", blogService.findAllByBlogType_IdAndTitleContaining(resolvedType, search, pageable));
         model.addAttribute("blogTypeList", blogTypeService.findAll());
         model.addAttribute("selectedType", typeId);
         return "blog/home";
