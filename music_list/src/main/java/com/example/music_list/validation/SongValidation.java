@@ -15,17 +15,17 @@ public class SongValidation implements Validator {
         Songdto song = (Songdto) target;
         if (song.getTitle().isEmpty()) {
             errors.rejectValue("title", "title.empty", "Title is empty!");
-        } else if (!song.getTitle().matches("^[a-zA-Z0-9\\s]+$")) {
+        } else if (!song.getTitle().matches("^[\\p{L}\\d\\s,]+$")) {
             errors.rejectValue("title", "title.invalid", "Title is invalid!");
         }
         if (song.getArtist().isEmpty()) {
             errors.rejectValue("artist", "artist.empty", "Artist is empty!");
-        } else if (!song.getArtist().matches("^[a-zA-Z0-9\\s]+$")) {
+        } else if (!song.getArtist().matches("^[\\p{L}\\d\\s,]+$")) {
             errors.rejectValue("artist", "artist.invalid", "Artist is invalid!");
         }
         if (song.getType().isEmpty()) {
             errors.rejectValue("type", "type.empty", "Type is empty!");
-        } else if (!song.getType().matches("^[\\p{L}0-9\\s,]+$")) {
+        } else if (!song.getType().matches("^[\\p{L}\\d\\s,]+$")) {
             errors.rejectValue("type", "type.invalid", "Type is invalid!");
         }
     }
