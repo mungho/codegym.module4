@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookService implements IBookService{
     @Autowired
@@ -18,7 +20,17 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public boolean borrowBook(String code) {
+    public boolean borrowBook(int id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            if (book.getAmount() > 0) {
+                book.setAmount(book.getAmount() - 1);
+                bookRepository.save(book);
+                return true;
+            }
+        }
         return false;
     }
 

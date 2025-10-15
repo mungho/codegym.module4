@@ -9,8 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IBookRepository extends JpaRepository<Book,Integer> {
     @Query("SELECT b FROM Book b WHERE b.category.id = :type")
     Page<Book> findAllbyCategory(@Param("type") int type, Pageable pageable);
+
+    Optional<Book> findByCode(String code);
 }

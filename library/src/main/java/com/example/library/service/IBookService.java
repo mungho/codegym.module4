@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface IBookService {
     Page<Book> getBooks(int type, Pageable pageable);
-    boolean borrowBook(String code);
+    boolean borrowBook(int id);
     boolean returnBook(String code);
 }

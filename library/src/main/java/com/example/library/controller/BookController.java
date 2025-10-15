@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 @RequestMapping("/books")
@@ -32,7 +34,21 @@ public class BookController {
     }
 
     @GetMapping("/borrow")
-    public String borrow(@RequestParam(name = "bookId") int bookId, Model model) {
-
+    public String borrow(@RequestParam(name = "id") int id, Model model,
+                         @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                         @RequestParam(name = "type", required = false, defaultValue = "1") int type,
+                         RedirectAttributes redirectAttributes) {
+        Pageable pageable = PageRequest.of(page,9, Sort.by("id").descending());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("books", bookService.getBooks(type, pageable));
+        boolean isSuccess = bookService.borrowBook(id);
+        if (isSuccess) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Borrowed successfully!");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+        } else {
+            redirectAttributes.addFlashAttribute("toastMessage", "Borrow failed!");
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/books?type=" + type;
     }
 }

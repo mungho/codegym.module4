@@ -13,6 +13,8 @@
                             th:attr="data-id=${book.id},
                                      data-title=${book.title},
                                      data-author=${book.author},
+                                     data-amount=${book.amount},
+                                     data-code=${book.code},
                                      data-year=${book.year},
                                      data-description=${book.description}">
                         Xem chi tiết
@@ -27,7 +29,7 @@
 <nav th:fragment="libraryMenu">
     <div class="mt-3">
         <input type="text" id="searchInput" class="form-control mb-2" placeholder="Tìm sách...">
-        <button id="searchBtn" class="btn btn-primary w-100">Tìm</button>
+        <button id="searchBtn" class="btn btn-secondary w-100">Tìm</button>
     </div>
     <br>
 
@@ -52,19 +54,40 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5 id="modalBookTitle"></h5>
+                    <h5 id="modalBookTitle" class="mb-4"></h5>
                     <p><strong>Tác giả:</strong> <span id="modalBookAuthor"></span></p>
-                    <p><strong>Năm:</strong> <span id="modalBookYear"></span></p>
+                    <p><strong>Năm xuất bản:</strong> <span id="modalBookYear"></span></p>
+                    <p><strong>Số lượng còn lại:</strong> <span id="modalBookAmount"></span></p>
                     <p><strong>Mô tả:</strong></p>
                     <p id="modalBookDescription"></p>
                 </div>
                 <div class="modal-footer">
-                    <form action="books/borrow">
-                        <input type="hidden" id="bookBorrow" name="bookId">
-                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Mượn sách</button>
+                    <form action="/books/borrow">
+                        <input type="hidden" id="modalBookId" name="id">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Mượn sách</button>
                     </form>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="toastMessage">
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <div id="toast-message"
+             class="toast align-items-center text-bg-success border-0"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             th:if="${toastMessage != null}"
+             th:classappend="${toastType == 'error'} ? ' text-bg-danger' : ' text-bg-success'">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${toastMessage}">
+                    <!-- Message content -->
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>

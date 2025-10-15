@@ -19,6 +19,7 @@
         </div>
     </div>
     <div th:replace="fragment/book-fragment :: bookDetail"></div>
+    <div th:replace="fragment/book-fragment :: toastMessage"></div>
 </div>
 </body>
 <script>
@@ -28,16 +29,29 @@
         const button = event.relatedTarget;
 
         const id = button.getAttribute('data-id');
+        const code = button.getAttribute('data-code');
         const title = button.getAttribute('data-title');
+        const amount = button.getAttribute('data-amount');
         const author = button.getAttribute('data-author');
         const year = button.getAttribute('data-year');
         const description = button.getAttribute('data-description');
 
-        document.getElementById('bookBorrow').value = id;
+        document.getElementById('modalBookId').value = id;
+        // document.getElementById('modalBookCode').value = code;
         document.getElementById('modalBookTitle').textContent = title;
+        document.getElementById('modalBookAmount').textContent = amount;
         document.getElementById('modalBookAuthor').textContent = author;
         document.getElementById('modalBookYear').textContent = year;
         document.getElementById('modalBookDescription').textContent = description;
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastEl = document.getElementById('toast-message');
+        if (toastEl) {
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
     });
 </script>
 
