@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <th:block th:replace="layout/library :: library"></th:block>
+</head>
+<body>
+<div class="container-fluid mt-2 mb-2 p-1">
+    <div>
+        <h2>Library List</h2>
+    </div>
+    <div class="row mt-2 mb-2 p-2">
+        <div class="col-3">
+            <div th:replace="fragment/book-fragment :: libraryMenu"></div>
+        </div>
+        <div class="col-9">
+            <div th:replace="fragment/book-fragment :: listBook"></div>
+        </div>
+    </div>
+    <div th:replace="fragment/book-fragment :: bookDetail"></div>
+</div>
+</body>
+<script>
+    const bookModal = document.getElementById('bookDetailModal');
+
+    bookModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+
+        const id = button.getAttribute('data-id');
+        const title = button.getAttribute('data-title');
+        const author = button.getAttribute('data-author');
+        const year = button.getAttribute('data-year');
+        const description = button.getAttribute('data-description');
+
+        document.getElementById('bookBorrow').value = id;
+        document.getElementById('modalBookTitle').textContent = title;
+        document.getElementById('modalBookAuthor').textContent = author;
+        document.getElementById('modalBookYear').textContent = year;
+        document.getElementById('modalBookDescription').textContent = description;
+    });
+</script>
+
+</html>

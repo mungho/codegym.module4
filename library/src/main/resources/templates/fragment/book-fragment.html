@@ -1,0 +1,71 @@
+<div th:fragment="listBook" class="row g-3">
+    <div class="col-12 col-sm-6 col-md-4" th:each="book : ${books}">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title mb-1" th:text="${book.title}">Tên sách</h5>
+                <p class="text-muted mb-2" th:text="'Tác giả: ' + ${book.author}">Tác giả</p>
+                <p class="mb-2" th:text="'Năm: ' + ${book.year}">Năm</p>
+                <p class="mb-3 small text-truncate" th:text="${book.description}">Mô tả ngắn…</p>
+                <div class="mt-auto text-end">
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#bookDetailModal"
+                            th:attr="data-id=${book.id},
+                                     data-title=${book.title},
+                                     data-author=${book.author},
+                                     data-year=${book.year},
+                                     data-description=${book.description}">
+                        Xem chi tiết
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav th:fragment="libraryMenu">
+    <div class="mt-3">
+        <input type="text" id="searchInput" class="form-control mb-2" placeholder="Tìm sách...">
+        <button id="searchBtn" class="btn btn-primary w-100">Tìm</button>
+    </div>
+    <br>
+
+
+    <div class="list-group">
+        <a th:each="cat : ${categories}"
+           th:href="@{/books(type=${cat.id})}"
+           class="list-group-item list-group-item-action"
+           th:attr="data-category=${cat.id}"
+           th:classappend="${type == cat.id} ? 'active' : ''"
+           th:text="${cat.name}">
+        </a>
+    </div>
+</nav>
+
+<div th:fragment="bookDetail">
+    <div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookDetailLabel">Chi tiết sách</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="modalBookTitle"></h5>
+                    <p><strong>Tác giả:</strong> <span id="modalBookAuthor"></span></p>
+                    <p><strong>Năm:</strong> <span id="modalBookYear"></span></p>
+                    <p><strong>Mô tả:</strong></p>
+                    <p id="modalBookDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <form action="books/borrow">
+                        <input type="hidden" id="bookBorrow" name="bookId">
+                        <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Mượn sách</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
