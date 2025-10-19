@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+<div th:replace="fragment/product :: navbar"></div>
+
+<div class="container py-4">
+    <div th:replace="fragment/product :: productDetail"></div>
+</div>
+
+</body>
+<script>
+    // 1. Lấy tất cả nút "Add to Cart"
+    const addButtons = document.querySelectorAll('.add-to-cart-btn');
+
+    // 2. Duyệt từng nút, gán sự kiện click
+    addButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn link reload trang
+
+            // 3. Lấy productId từ data-id của nút
+            const productId = this.dataset.id;
+
+            // 4. Gửi request tới server dùng fetch API
+            fetch(`/cart/add-ajax/${productId}`, {
+                method: 'POST'
+            })
+                .then(response => response.json()) // 5. Chuyển phản hồi thành JSON
+                .then(data => {
+                    if (data.success) {
+                        // 6. Nếu thành công, hiển thị thông báo
+                        alert(`Đã thêm sản phẩm vào giỏ! Tổng sản phẩm: ${data.totalItems}`);
+
+                        // 7. Cập nhật số lượng hiển thị trên navbar (badge)
+                        const badge = document.querySelector('.navbar .badge');
+                        if (badge) {
+                            badge.innerText = data.totalItems;
+                        }
+                    } else {
+                        // 8. Nếu thất bại, thông báo lỗi
+                        alert("Thêm sản phẩm thất bại!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi thêm vào giỏ:", error);
+                });
+        });
+    });
+</script>
+
+</html>

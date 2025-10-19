@@ -1,0 +1,116 @@
+<div th:fragment="category">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <strong>Categories</strong>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li th:each="cat : ${categories}"
+                class="list-group-item"
+                th:classappend="${selectedCategory != null and cat.id == selectedCategory.id} ? ' active text-primary bg-light fw-bold' : ''">
+                <a th:href="@{/products(categoryId=${cat.id})}"
+                   th:text="${cat.name}"
+                   class="text-decoration-none d-block">
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<div th:fragment="productList">
+    <div class="row g-3">
+        <div class="col-12">
+            <h4 class="mb-3">
+                <span th:if="${selectedCategory != null}" th:text="${selectedCategory.name}"></span>
+                <span th:if="${selectedCategory == null}">All products</span>
+            </h4>
+        </div>
+
+        <!-- Thẻ sản phẩm -->
+        <div class="col-12 col-sm-6 col-md-4"
+             th:each="product : ${products}">
+            <div class="card h-100 shadow-sm">
+                <img th:src="${product.imageUrl}" class="card-img-top" alt="product image">
+                <div class="card-body d-flex flex-column">
+                    <h6 class="card-title mb-1" th:text="${product.name}">Product name</h6>
+                    <p class="text-muted mb-2" th:text="${product.price} + ' VND'">Price</p>
+                    <a th:href="@{/products/detail(id=${product.id})}" class="btn btn-sm btn-primary mt-auto">View detail</a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông báo khi không có sản phẩm -->
+        <div th:if="${#lists.isEmpty(products)}" class="text-center text-muted py-4">
+            Empty item.
+        </div>
+    </div>
+</div>
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="navbar">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/products}">My Shop</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item me-3">
+                    <a class="nav-link" th:href="@{/products}">Products</a>
+                </li>
+
+                <!-- Icon giỏ hàng -->
+                <li class="nav-item">
+                    <a class="nav-link position-relative" th:href="@{/cart}">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <!-- Hiển thị số lượng sản phẩm trong giỏ -->
+                        <span th:if="${cartCount > 0}"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:text="${cartCount}">
+                            0
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div th:fragment="productDetail">
+    <div class="container py-5">
+        <div class="row">
+            <!-- Ảnh sản phẩm -->
+            <div class="col-md-5">
+                <div class="card shadow-sm">
+                    <img th:src="${product.imageUrl}" class="card-img-top img-fluid" alt="product image">
+                </div>
+            </div>
+
+            <!-- Thông tin chi tiết -->
+            <div class="col-md-7">
+                <h2 th:text="${product.name}" class="fw-bold"></h2>
+                <p class="text-muted mb-1">Category:
+                    <span th:text="${product.productType.name}"></span>
+                </p>
+                <p class="text-danger fs-4 fw-semibold"
+                   th:text="${#numbers.formatInteger(product.price, 0, 'POINT')} + ' VND'"></p>
+
+                <p class="mb-3" th:text="${product.description}"></p>
+
+                <p><strong>Amount:</strong>
+                    <span th:text="${product.amount}"></span>
+                </p>
+
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-success add-to-cart-btn" th:data-id="${product.id}">Add to Cart</a>
+                    <a href="/products" class="btn btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
