@@ -1,0 +1,17 @@
+<!--<nav th:fragment="blog-type">-->
+<!--    <ul class="list-group">-->
+<!--        <li th:each="type : ${blogTypeList}" class="list-group-item" th:text="${type.name}"></li>-->
+<!--    </ul>-->
+<!--</nav>-->
+
+<nav th:fragment="blog-type">
+    <ul class="list-group">
+        <li th:each="type : ${blogTypeList}"
+            class="list-group-item"
+            th:classappend="${selectedType == type.id} ? 'active' : ''">
+            <a th:href="@{/(type=${type.id})}"
+               class="text-decoration-none d-block"
+               th:text="${type.name}"></a>
+        </li>
+    </ul>
+</nav>
