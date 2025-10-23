@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <th:block th:replace="layout/library :: library"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="container-fluid mt-2 mb-2 p-1">
+    <div th:replace="layout/blog-nav :: blog-nav"></div>
+    <div class="row mt-2 mb-2 p-2">
+        <div class="col-3">
+            <div th:replace="layout/blog-type :: blog-type"></div>
+        </div>
+<!--        <div class="col-9">-->
+<!--            <div th:replace="layout/blog-list :: blog-list"></div>-->
+<!--        </div>-->
+        <div class="col-9">
+            <div id="blogList" th:replace="layout/blog-list :: blog-list"></div>
+        </div>
+
+    </div>
+<!--    <div class="mb-3 d-flex justify-content-end p-1">-->
+<!--        <div th:replace="layout/paginator :: blog-paginator"></div>-->
+<!--    </div>-->
+    <div class="text-center mt-3">
+        <button id="loadMoreBtn" class="btn btn-outline-primary">Xem thêm</button>
+    </div>
+
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#searchInput').on('keyup', function() {
+            let keyword = $(this).val().trim();
+            let type = $('input[name="type"]').val();
+
+            if (keyword.length < 2) {
+                $('#suggestBox').hide();
+                return;
+            }
+
+            $.ajax({
+                url: '/blog/suggest',
+                method: 'GET',
+                data: {
+                    keyword: keyword,
+                    type: type
+                },
+                success: function(data) {
+                    if (data.length === 0) {
+                        $('#suggestBox').hide();
+                        return;
+                    }
+
+                    let suggestions = '';
+                    data.forEach(function(item) {
+                        suggestions += `<div class="suggest-item" style="padding:5px; cursor:pointer;">${item.title}</div>`;
+                    });
+
+                    $('#suggestBox').html(suggestions).show();
+                },
+                error: function() {
+                    $('#suggestBox').hide();
+                }
+            });
+        });
+
+        $(document).on('click', '.suggest-item', function() {
+            $('#searchInput').val($(this).text());
+            $('#suggestBox').hide();
+        });
+
+    });
+
+    let currentPage = 0;
+    let selectedType = $('input[name="type"]').val() || 1;
+
+    $('#loadMoreBtn').on('click', function () {
+        currentPage++;
+
+        $.ajax({
+            url: '/blog/loadMore',
+            type: 'GET',
+            data: {
+                page: currentPage,
+                type: selectedType
+            },
+            success: function (data) {
+                // Nếu fragment rỗng thì dừng
+                if ($.trim(data).length === 0) {
+                    $('#loadMoreBtn').text('Hết bài rồi').prop('disabled', true);
+                    return;
+                }
+
+                // lấy phần blog mới (các col-12 trong fragment)
+                let newBlogs = $(data).find('.col-12');
+                if (newBlogs.length === 0) {
+                    $('#loadMoreBtn').text('Hết bài rồi').prop('disabled', true);
+                    return;
+                }
+
+                // thêm vào danh sách
+                $('#blogList .row').append(newBlogs);
+            },
+            error: function () {
+                alert('Không thể tải thêm bài viết.');
+            }
+        });
+    });
+
+</script>
+
+</html>

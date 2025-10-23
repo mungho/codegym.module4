@@ -1,0 +1,26 @@
+<nav th:fragment="blog-nav">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div>
+                <a class="navbar-brand" href="#">My Blog</a>
+
+            </div>
+            <div class="d-flex ms-auto align-items-center">
+                <form th:action="@{/blog/add}" method="get" class="d-flex me-2">
+                    <input type="hidden" name="type" th:value="${selectedType}">
+                    <button type="submit" class="btn btn-primary">Add Post</button>
+                </form>
+                <form action="/blog/search" method="get" class="d-flex me-2" role="search">
+                    <input type="hidden" name="type" th:value="${selectedType}">
+                    <div style="position: relative;">
+                        <input id="searchInput" class="form-control me-2" type="search" name="search"
+                               placeholder="Search by title" aria-label="Search" autocomplete="off"/>
+                        <div id="suggestBox"
+                             style="position: absolute; background: white; border: 1px solid #ccc; width: 100%; z-index: 1000; display: none;"></div>
+                    </div>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</nav>

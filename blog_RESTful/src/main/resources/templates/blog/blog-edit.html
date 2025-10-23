@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <th:block th:replace="layout/library :: library"></th:block>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="container-fluid mt-2 mb-2 p-1">
+    <div th:replace="layout/blog-nav :: blog-nav"></div>
+    <div class="row mt-2 mb-2 p-2">
+        <div class="col-3">
+            <div th:replace="layout/blog-type :: blog-type"></div>
+        </div>
+        <div class="col-9">
+            <div th:replace="layout/blog-list :: blog-list"></div>
+            <div th:if="${openAddModal == true}">
+                <div th:replace="layout/blog-edit :: blog-edit"></div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 d-flex justify-content-end p-1">
+        <div th:replace="layout/paginator :: blog-paginator"></div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('editBlogModal');
+        if (el) {
+            var modal = new bootstrap.Modal(el);
+            modal.show();
+        }
+    });
+</script>
+</html>

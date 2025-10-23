@@ -20,12 +20,6 @@ public class CartController {
     @Autowired
     private IProductService productService;
 
-    /**
-     * Thêm sản phẩm vào giỏ hàng bằng AJAX
-     * @param id id sản phẩm
-     * @param session session của user
-     * @return JSON {success, totalItems, totalPrice}
-     */
     @PostMapping("/add-ajax/{id}")
     @ResponseBody
     public Map<String, Object> addToCartAjax(@PathVariable int id, HttpSession session) {
